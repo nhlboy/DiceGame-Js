@@ -8,16 +8,20 @@ GAME RULES:
 */
 
 
-// Decalre variables
-var scores, roundScore, activePlayer, playerNameFirst, playerNameSecond, gamePlaying;
+// Declare variables
+var scores, roundScore, activePlayer, playerNameFirst, playerNameSecond, gamePlaying, targetScore;
 
 init();
+
+var lastDice;
 
 document.querySelector('#name-0').textContent = playerNameFirst;
 document.querySelector('#name-1').textContent = playerNameSecond;
 
-document.querySelector('.btn-roll').addEventListener('click', function() {
-    if(gamePlaying) {
+
+// Button Roll
+document.querySelector('.btn-roll').addEventListener('click', function () {
+    if (gamePlaying) {
         // 1. Random number
         var dice = Math.floor(Math.random() * 6) + 1;
 
@@ -26,20 +30,26 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
 
-
         //3. Update the round score IF the rolled number was NOT a 1
-        if (dice !== 1) {
-            //Add score
+        if (dice === 6 && lastDice === 6) {
+            // Player looses score
+            scores[activePlayer] = 0;
+            document.querySelector('#score-' + activePlayer).textContent = '0';
+            nextPlayer();
+        } else if (dice !== 1) {
+            // Add score
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         } else {
-            //Next player
-            nextPlayer();
+            // Next player
+            nextPlayer;
         }
-    }    
+        lastDice = dice;
+        }
 });
 
-document.querySelector('.btn-hold').addEventListener('click', function() {
+// addEventListener('click', function() - add listener: when mouse click -> call function
+document.querySelector('.btn-hold').addEventListener('click', function () {
     if (gamePlaying) {
         // Add CURRENT score to GLOBAL score
         scores[activePlayer] += roundScore;
@@ -48,9 +58,11 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
         // Check if player won the game
-        if (scores[activePlayer] >= 10) {
+        if (scores[activePlayer] >= targetScore) {
             alert('WINNER! WINNER!! CHICKEN DINNER!!!')
             document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
+
+            // Hide CSS property (dice in our case)
             document.querySelector('.dice').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
@@ -88,13 +100,14 @@ function init() {
     roundScore = 0;
     gamePlaying = true;
 
-    playerNameFirst = prompt('What is you name, Player?');
+    playerNameFirst = prompt('What is you name, Player?');
     playerNameSecond = prompt('And what is you name, another Player?');
-    
+    targetScore = prompt('What will be the targhet score?');
+
+    document.getElementById('target-score').textContent = 'Target score is: ' + targetScore;
 
 
     document.querySelector('.dice').style.display = 'none';
-
     document.getElementById('score-0').textContent = '0';
     document.getElementById('score-1').textContent = '0';
     document.getElementById('current-0').textContent = '0';
@@ -109,6 +122,18 @@ function init() {
 }
 
 
+/*
+1. A player looses his ENTIRE score when he rolls two 6 in a row. 
+After that, it's the next player's turn. 
+(Hint: Always save the previous dice roll in a separate variable)
 
+2. Add an input field to the HTML where players can set the winning score, 
+so that they can change the predifined score of 100. 
+(Hint: you can read that value with the .value property in JavaScript. 
+    This is a good oportunity to use google to figure this out)
 
-
+3. Add another dice to the game, so that there are two dices now. 
+The player looses his current score when one of them is a 1. 
+(Hint: you will need CSS to position the second dice, 
+    so take a look at the CSS code for the firts one.)
+*/

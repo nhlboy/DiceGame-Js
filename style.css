@@ -1,6 +1,44 @@
 /**********************************************
 *** GENERAL
 **********************************************/
+.final-score {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #555;
+    font-size: 10px;
+    font-family: 'Lato';
+    text-align: center;
+    padding: 10px;
+    width: 160px;
+    text-transform: uppercase;
+
+}
+
+.final-score:focus {
+    outline: none;
+}
+
+.target-score {
+
+    border-color: #555;
+    border-width: 2px;
+    border-style: solid;
+    transform: translateX(-50%);
+    position: absolute;
+    background-color: #f7f7f7;
+    color: #555555;
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    left: 50%;
+    top: 520px;
+    font-family: 'Lato';
+    font-size: 18px;
+    text-transform: uppercase;
+
+}
 
 * {
     margin: 0;
@@ -44,6 +82,7 @@ body {
     height: 600px;
     padding: 100px;
 }
+
 
 
 
